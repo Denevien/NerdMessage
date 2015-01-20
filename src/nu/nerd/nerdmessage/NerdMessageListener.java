@@ -31,4 +31,21 @@ public class NerdMessageListener implements Listener {
             }
         }
     }
+    public void onPlayerCommand (PlayerCommandPreprocessEvent event){
+        if(event.getMessage().startsWith("me ")){
+            String senderName = ChatColor.stripColor(event.getPlayer().getName()).toLowerCase();
+            for (NMUser user : plugin.getUsers()) {
+                if (user.isIgnoringPlayer(senderName)) {
+                    Iterator<Player> iter = event.getRecipients().iterator();
+                    while(iter.hasNext()) {
+                        Player player = iter.next();
+                        String name = ChatColor.stripColor(player.getName()).toLowerCase();
+                        if(name.equalsIgnoreCase(user.getName())) {
+                            iter.remove();
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
